@@ -32,9 +32,6 @@ window.onload = function () {
 document.getElementById('submit-btn').onclick = function (e) {
     e.preventDefault();
 
-    let validateElementsIdList = ['input-first-name', 'input-last-name', 'input-phone',
-        'input-organization', 'input-password1', 'input-password2'];
-
     let isValidate = true;
 
     validateElementsIdList.forEach(function (id) {
