@@ -55,13 +55,54 @@ document.getElementById('submit-btn').onclick = function (e) {
     } else {
         document.getElementById('input-password1').classList.remove('is-invalid');
         document.getElementById('input-password2').classList.remove('is-invalid');
-        document.getElementById('error-password-dont-match').classList.add('d-none');
+        document.getElementById('label-error-password-dont-match').classList.add('d-none');
     }
 
     if (!isValidate) {
         return;
     }
 
+
     //Send data to server
-    alert('ok');
+    axios.post('/registration', {
+
+        'first_name': document.getElementById('input-first-name').value,
+        'last_name': document.getElementById('input-last-name').value,
+        'phone': document.getElementById('input-phone').value,
+        'organization': document.getElementById('input-organization').value,
+        'password': document.getElementById('input-password1').value,
+        'invitatory_id': document.getElementById('input-invitatory').value
+
+    }).then(function (response) {
+        clearErrorLabels();
+
+        window.location = '/login';
+
+    }).catch(function (error) {
+
+        clearErrorLabels();
+
+        let errorType = error.response.data.error;
+
+        switch (errorType) {
+
+            case E_NOT_UNIQUE_PHONE:
+                document.getElementById('label-error-phone-dont-unique').classList.remove('d-none');
+                break;
+            case E_INVALID_INVITATORY_ID:
+                document.getElementById('label-error-invitatory-not-found').classList.remove('d-none');
+                break;
+            default :
+                document.getElementById('label-undefined-error').classList.remove('d-none');
+                break;
+        }
+
+        console.log(error);
+    })
+}
+
+function clearErrorLabels() {
+    document.getElementById('label-error-phone-dont-unique').classList.add('d-none');
+    document.getElementById('label-error-invitatory-not-found').classList.add('d-none');
+    document.getElementById('label-undefined-error').classList.add('d-none');
 }

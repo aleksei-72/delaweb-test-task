@@ -73,4 +73,12 @@ class Organization
 
         return $this;
     }
+
+
+    public function toArray(): array {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle()
+        ];
+    }
 }

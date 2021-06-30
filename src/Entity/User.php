@@ -154,4 +154,15 @@ class User
         return $this;
     }
 
+    public function toArray(): array {
+        return [
+            'id' => $this->getId(),
+            'first_name' => $this->getFirstName(),
+            'last_name' => $this->getLastName(),
+            'phone' => $this->getPhone(),
+            'invitatory_id' => $this->getInvitatory(),
+            'organization' => $this->getOrganization()->toArray()
+        ];
+    }
+
 }

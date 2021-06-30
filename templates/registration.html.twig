@@ -28,8 +28,8 @@
             <div class="row">
                 <div class="col-sm-4 mt-3">
                     <label for="input-phone" class="form-label">Телефон</label>
-                    <input type="tel" class="form-control" id="input-phone" pattern="^([8|7])([0-9]{10})$" required>
-                    <p class="error-text d-none" id="error-phone-dont-unique">Этот номер телефона уже используется</p>
+                    <input type="tel" class="form-control" id="input-phone" pattern="^[0-9]{6,15}$" required>
+                    <p class="error-text d-none" id="label-error-phone-dont-unique">Этот номер телефона уже используется</p>
                 </div>
 
                 <div class="col-sm-8 mt-3">
@@ -37,9 +37,10 @@
 
                     <select class="form-control" id="input-invitatory" required>
                         {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.firstName }} {{ user.lastName }}</option>
+                            <option value="{{ user.id }}">{{ user.first_name }} {{ user.last_name }} ({{ user.phone }})</option>
                         {% endfor %}
                     </select>
+                    <p class="error-text d-none" id="label-error-invitatory-not-found">Данный пользователь был удален</p>
                 </div>
             </div>
 
@@ -56,9 +57,10 @@
             <div class="mt-3">
                 <label for="input-password2" class="form-label">Повторите пароль</label>
                 <input type="password" class="form-control" id="input-password2" pattern="(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}" required>
-                <p class="error-text d-none" id="error-password-dont-match">Пароли не совпадают</p>
+                <p class="error-text d-none" id="label-error-password-dont-match">Пароли не совпадают</p>
             </div>
 
+            <p class="error-text d-none mt-3" id="label-undefined-error">Непредвиденная ошибка</p>
             <div class="mt-3 row">
                 <div class="col-sm-4">
                     <button type="submit" class="btn btn-primary" id="submit-btn">Регистрация</button>
@@ -71,6 +73,8 @@
 
         </form>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/asset/script/error-list.js"></script>
     <script src="/asset/script/registration.js"></script>
 
 </body>
