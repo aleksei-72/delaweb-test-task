@@ -1,0 +1,9 @@
+* {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.form-container {
+    max-width: 800px;
+    border-radius: 3px;
+}
+
