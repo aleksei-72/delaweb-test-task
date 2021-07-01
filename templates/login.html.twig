@@ -1,0 +1,32 @@
+<div class="px-4 d-flex align-items-center" style="height: 100vh; min-height: 360px">
+    <form class="d-block mx-auto form-container border px-3 pb-4">
+
+        <h2 class="mt-4">Авторизация</h2>
+
+        <div class="mt-3">
+            <label for="input-phone" class="form-label">Номер телефона</label>
+            <input type="tel" class="form-control" id="input-phone" pattern="^[0-9]{6,15}$" required>
+            <p class="error-text d-none" id="label-error-phone-not-found">Номер телефона не найден</p>
+        </div>
+
+        <div class="mt-3">
+            <label for="input-password" class="form-label">Пароль</label>
+            <input type="password" class="form-control" id="input-password" pattern="(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}" required>
+            <p class="error-text d-none" id="label-error-invalid-password">Неверный пароль</p>
+        </div>
+
+        <div class="mt-3 row">
+            <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary" id="submit-btn">Авторизоваться</button>
+            </div>
+
+            <div class="col-sm-8" style="text-align: right">
+                <p class="pt-3 mb-0">У вас еще нет аккаунта? <label><a href="/registration">Зарегистрируйтесь</a></label></p>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="/asset/script/login.js" defer></script>
+

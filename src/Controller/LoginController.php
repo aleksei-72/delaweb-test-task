@@ -28,10 +28,26 @@ class LoginController extends AbstractController
             array_push($usersJson, $user->toArray());
         }
 
-        return $this->render('registration.html.twig', [
-            'users' => $usersJson
+        return $this->render('index.html.twig', [
+            'bodyTemplateName' => 'registration.html.twig',
+            'users' => $usersJson,
+            'authorization2' => '5'
         ]);
     }
+
+
+    /**
+     * @param Request $request
+     * @return Response
+     * @Route ("/login", methods={"GET"})
+     */
+    public function showLoginPage(Request $request): Response {
+
+        return $this->render('index.html.twig', [
+            'bodyTemplateName' => 'login.html.twig'
+        ]);
+    }
+
 
 
     /**
@@ -116,5 +132,37 @@ class LoginController extends AbstractController
         $manager->flush();
 
         return $this->json(['id' => $newUser->getId()]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @Route("/login", methods={"POST"})
+     */
+    public function login(Request $request): JsonResponse {
+
+        $content = json_decode($request->getContent(), true);
+
+        try {
+            $phone = $content['phone'];
+            $password = $content['password'];
+        } catch (\Exception $e) {
+            return $this->json(['error' => ErrorList::E_INCOMPLETE_DATA], 400);
+        }
+
+        $doctrine = $this->getDoctrine();
+
+        $targetUser = $doctrine->getRepository(User::class)->findOneBy(['phone' => $phone]);
+
+        if (!$targetUser) {
+            return $this->json(['error' => ErrorList::E_USER_NOT_FOUND], 400);
+        }
+
+        if (!$targetUser->verifyPassword($password)) {
+            return $this->json(['error' => ErrorList::E_INVALID_PASSWORD], 400);
+        }
+
+        return $this->json('ok');
     }
 }
