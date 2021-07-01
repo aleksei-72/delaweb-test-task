@@ -2,7 +2,7 @@ let validateElementsIdList = ['input-phone', 'input-password'];
 
 window.onload = function () {
 
-    if (localStorage.getItem('token')) {
+    if (getCookie('token')) {
         window.location = '/profile';
     }
 
@@ -61,7 +61,6 @@ document.getElementById('submit-btn').onclick = function (e) {
 
     }).then(function (response) {
         clearErrorLabels();
-        localStorage.setItem('token', response.data);
 
         window.location = '/profile';
 

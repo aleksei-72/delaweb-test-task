@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Organization;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -169,9 +170,14 @@ class LoginController extends AbstractController
         $auth->removeExpiredSessions($targetUser);
         $token = $auth->generateToken($targetUser);
 
+        $response = new JsonResponse();
+
+        $tokenCookie = new Cookie('token', $token->getKey(), $token->getExp(), '/', null, false, false);
+        $response->headers->setCookie($tokenCookie);
+
         $manager->persist($token);
         $manager->flush();
 
-        return $this->json($token->getKey());
+        return $response;
     }
 }

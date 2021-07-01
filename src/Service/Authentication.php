@@ -22,17 +22,17 @@ class Authentication {
 
     /**
      * @param string $key
-     * @return User
+     * @return Token
      * @throws \Exception
      */
-    public function getUserByToken(string $key): User {
-        $user = $this->doctrine->getRepository(Token::class)->findOneBy(['key' => $key]);
+    public function getTokenByKey(string $key): Token {
+        $token = $this->doctrine->getRepository(Token::class)->findOneBy(['key' => $key]);
 
-        if (!$user) {
+        if (!$token) {
             throw new \Exception("invalid_key");
         }
 
-        return $user;
+        return $token;
     }
 
     /**
@@ -46,7 +46,7 @@ class Authentication {
         $token->setExp(time() + $this->tokenExp);
 
         while (1) {
-            $key = $this->generate();
+            $key = $this->generateKey();
 
             //check for unique
             if (!$this->doctrine->getRepository(Token::class)->findOneBy(['key' => $key])) {
@@ -79,7 +79,7 @@ class Authentication {
         $manager->flush();
     }
 
-    private function generate(): string {
+    private function generateKey(): string {
         $symbols = "qwertyuiopasdfghjklzxcvbnm1234567890_";
 
         $key = "";
