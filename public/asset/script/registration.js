@@ -3,6 +3,10 @@ let validateElementsIdList = ['input-first-name', 'input-last-name', 'input-phon
 
 window.onload = function () {
 
+    if (localStorage.getItem('token')) {
+        window.location = '/profile';
+    }
+
     validateElementsIdList.forEach(function (id) {
 
         let element = document.getElementById(id);

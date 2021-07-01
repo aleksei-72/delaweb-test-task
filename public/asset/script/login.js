@@ -2,6 +2,10 @@ let validateElementsIdList = ['input-phone', 'input-password'];
 
 window.onload = function () {
 
+    if (localStorage.getItem('token')) {
+        window.location = '/profile';
+    }
+
     validateElementsIdList.forEach(function (id) {
 
         let element = document.getElementById(id);
@@ -57,8 +61,9 @@ document.getElementById('submit-btn').onclick = function (e) {
 
     }).then(function (response) {
         clearErrorLabels();
+        localStorage.setItem('token', response.data);
 
-        alert("ok");
+        window.location = '/profile';
 
     }).catch(function (error) {
 

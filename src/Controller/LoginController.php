@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\Authentication;
 use App\ErrorList;
 
 
@@ -30,8 +31,7 @@ class LoginController extends AbstractController
 
         return $this->render('index.html.twig', [
             'bodyTemplateName' => 'registration.html.twig',
-            'users' => $usersJson,
-            'authorization2' => '5'
+            'users' => $usersJson
         ]);
     }
 
@@ -152,6 +152,7 @@ class LoginController extends AbstractController
         }
 
         $doctrine = $this->getDoctrine();
+        $manager = $doctrine->getManager();
 
         $targetUser = $doctrine->getRepository(User::class)->findOneBy(['phone' => $phone]);
 
@@ -163,6 +164,14 @@ class LoginController extends AbstractController
             return $this->json(['error' => ErrorList::E_INVALID_PASSWORD], 400);
         }
 
-        return $this->json('ok');
+        $auth = new Authentication($doctrine);
+
+        $auth->removeExpiredSessions($targetUser);
+        $token = $auth->generateToken($targetUser);
+
+        $manager->persist($token);
+        $manager->flush();
+
+        return $this->json($token->getKey());
     }
 }
