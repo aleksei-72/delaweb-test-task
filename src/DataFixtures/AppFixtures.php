@@ -23,10 +23,13 @@ class AppFixtures extends Fixture
         $user->setPhone('88005553555');
         $user->setPassword('P@ssw0rd');
         $user->setOrganization($organization);
+        $user->setInvitatory($user);
 
         $manager->persist($user);
 
 
         $manager->flush();
+
+
     }
 }

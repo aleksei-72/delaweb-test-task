@@ -81,7 +81,7 @@ class LoginController extends AbstractController
             return $this->json(['error' => ErrorList::E_INCOMPLETE_DATA], 400);
         }
 
-        return $this->json(['id' => $newUser->getId()]);
+        return $this->json(null, 201);
     }
 
 
@@ -119,7 +119,7 @@ class LoginController extends AbstractController
         $auth->removeExpiredSessions($targetUser);
         $token = $auth->generateToken($targetUser);
 
-        $response = new JsonResponse();
+        $response = new JsonResponse(null, 204);
 
         $tokenCookie = new Cookie('token', $token->getKey(), $token->getExp(), '/', null, false, false);
         $response->headers->setCookie($tokenCookie);

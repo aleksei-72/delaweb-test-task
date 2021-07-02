@@ -22,18 +22,15 @@ window.onload = function () {
 
             if(this.value === '') {
                 this.classList.remove('is-invalid');
-                this.classList.remove('is-valid');
                 return;
             }
 
             if(this.checkValidity()) {
-                this.classList.add('is-valid');
                 this.classList.remove('is-invalid');
                 return;
             }
 
             this.classList.add('is-invalid');
-            this.classList.remove('is-valid');
         }
 
         element.onchange();

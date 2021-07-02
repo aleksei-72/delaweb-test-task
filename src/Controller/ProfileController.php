@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Organization;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -103,17 +104,15 @@ class ProfileController extends AbstractController
 
         $manager->flush();
 
-        return $this->json('');
+        return $this->json('',204);
 
     }
 
-    private function clearCookieAndRedirectToLogin(): Response {
-        $response = new Response();
+    private function clearCookieAndRedirectToLogin(): RedirectResponse {
+        $response = new RedirectResponse('Location: /login');
 
         $tokenCookie = new Cookie('token', '', time() - 60, '/', null, false, false);
         $response->headers->setCookie($tokenCookie);
-        $response->headers->set('Location: /login');
-        $response->setStatusCode(302);
         return $response;
     }
 
