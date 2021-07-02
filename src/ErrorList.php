@@ -14,4 +14,5 @@ class ErrorList
     const E_NOT_UNIQUE_PHONE = 'NOT_UNIQUE_PHONE';
 
     const E_USER_NOT_FOUND = 'USER_NOT_FOUND';
+    const E_UNAUTHORIZE = 'E_UNAUTHORIZE';
 }

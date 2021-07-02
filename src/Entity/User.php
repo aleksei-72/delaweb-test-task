@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\ErrorList;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -72,6 +73,11 @@ class User
     }
 
     public function setFirstName(string $firstName): self {
+
+        if (!preg_match('/^[а-яА-Я]{1,25}$/u', $firstName)) {
+            throw new \Exception(ErrorList::E_INVALID_FIRST_NAME, 400);
+        }
+
         $this->firstName = $firstName;
 
         return $this;
@@ -82,6 +88,11 @@ class User
     }
 
     public function setLastName(string $lastName): self {
+
+        if (!preg_match('/^[а-яА-Я]{1,25}$/u', $lastName)) {
+            throw new \Exception(ErrorList::E_INVALID_LAST_NAME, 400);
+        }
+
         $this->lastName = $lastName;
 
         return $this;
@@ -92,6 +103,11 @@ class User
     }
 
     public function setPhone(string $phone): self {
+
+        if (!preg_match('/^[0-9]{6,15}$/', $phone)) {
+            throw new \Exception(ErrorList::E_INVALID_PHONE, 400);
+        }
+
         $this->phone = $phone;
 
         return $this;
@@ -102,6 +118,11 @@ class User
     }
 
     public function setPassword(string $password): self {
+
+        if (!preg_match('/[0-9a-zA-Z!@#$%^&*]{6,}/', $password)) {
+            throw new \Exception(ErrorList::E_INVALID_PASSWORD, 400);
+        }
+
         $this->password = password_hash($password, PASSWORD_BCRYPT);
 
         return $this;
@@ -112,6 +133,7 @@ class User
     }
 
     public function setInvitatory(?self $invitatory): self {
+
         $this->invitatory = $invitatory;
 
         return $this;
@@ -149,6 +171,7 @@ class User
     }
 
     public function setOrganization(?Organization $organization): self {
+
         $this->organization = $organization;
 
         return $this;
@@ -163,6 +186,69 @@ class User
             'invitatory_id' => $this->getInvitatory(),
             'organization' => $this->getOrganization()->toArray()
         ];
+    }
+
+    /**
+     * @param $doctrine
+     * @param $json
+     * @throws \Exception
+     */
+    public function patch($doctrine, $json) {
+
+        $manager = $doctrine->getManager();
+
+
+        if (!empty($json['first_name'])) {
+            $this->setFirstName($json['first_name']);
+        }
+
+        if (!empty($json['last_name'])) {
+            $this->setLastName($json['last_name']);
+        }
+
+        if (!empty($json['phone'])) {
+
+            $userWithThisPhone = $doctrine->getRepository(User::class)->findOneBy(['phone' => $json['phone']]);
+
+            if ($userWithThisPhone && $userWithThisPhone->getId() !== $this->getId()) {
+                throw new \Exception(ErrorList::E_NOT_UNIQUE_PHONE, 400);
+            }
+
+            $this->setPhone($json['phone']);
+        }
+
+        if (!empty($json['organization'])) {
+
+            $organization = $doctrine->getRepository(Organization::class)
+                ->findOneBy(['title' => $json['organization']]);
+
+            if (!$organization) {
+                //create new Organization
+                $organization = new Organization();
+                $organization->setTitle($json['organization']);
+
+
+                $manager->persist($organization);
+            }
+            $this->setOrganization($organization);
+        }
+
+        if (!empty($json['password'])) {
+            $this->setPassword($json['password']);
+        }
+
+        if (!empty($json['invitatory_id'])) {
+
+            $invitatoryUser = $doctrine->getRepository(User::class)->find($json['invitatory_id']);
+
+            if (!$invitatoryUser) {
+                throw new \Exception(ErrorList::E_INVALID_INVITATORY_ID, 400);
+            }
+
+            $this->setInvitatory($invitatoryUser);
+        }
+
+        $manager->flush();
     }
 
 }

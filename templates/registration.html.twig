@@ -6,12 +6,12 @@
         <div class="row">
             <div class="col-sm-4 mt-3">
                 <label for="input-first-name" class="form-label">Имя</label>
-                <input type="text" class="form-control" id="input-first-name" pattern="^[А-Я][а-я]{1,25}$" required>
+                <input type="text" class="form-control" id="input-first-name" pattern="^[а-яА-Я]{1,25}$" required>
             </div>
 
             <div class="col-sm-8 mt-3">
                 <label for="input-last-name" class="form-label">Фамилия</label>
-                <input type="text" class="form-control" id="input-last-name" pattern="^[А-Я][а-я]{1,25}$" required>
+                <input type="text" class="form-control" id="input-last-name" pattern="^[а-яА-Я]{1,25}$" required>
             </div>
         </div>
 
@@ -41,16 +41,15 @@
 
         <div class="mt-3">
             <label for="input-password1" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="input-password1" pattern="(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}" required>
+            <input type="password" class="form-control" id="input-password1" pattern="[0-9a-zA-Z!@#$%^&*]{6,}" required>
         </div>
 
         <div class="mt-3">
             <label for="input-password2" class="form-label">Повторите пароль</label>
-            <input type="password" class="form-control" id="input-password2" pattern="(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}" required>
+            <input type="password" class="form-control" id="input-password2" pattern="[0-9a-zA-Z!@#$%^&*]{6,}" required>
             <p class="error-text d-none" id="label-error-password-dont-match">Пароли не совпадают</p>
         </div>
 
-        <p class="error-text d-none mt-3" id="label-undefined-error">Непредвиденная ошибка</p>
         <div class="mt-3 row">
             <div class="col-sm-4">
                 <button type="submit" class="btn btn-primary" id="submit-btn">Регистрация</button>

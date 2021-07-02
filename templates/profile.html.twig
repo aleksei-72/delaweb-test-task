@@ -1,4 +1,4 @@
-<div class="px-4 d-flex align-items-center" style="height: 100vh; min-height: 602px">
+<div class="px-4 d-flex align-items-center" style="height: 100vh; min-height: 430px">
     <form class="d-block mx-auto form-container border px-3 pb-4">
 
         <h2 class="mt-4">Мой профиль</h2>
@@ -6,12 +6,12 @@
         <div class="row">
             <div class="col-sm-4 mt-3">
                 <label for="input-first-name" class="form-label">Имя</label>
-                <input type="text" class="form-control" value="{{ currentUser.first_name }}" id="input-first-name" pattern="^[А-Я][а-я]{1,25}$" required>
+                <input type="text" class="form-control" value="{{ currentUser.first_name }}" id="input-first-name" pattern="^[а-яА-Я]{1,25}$" required>
             </div>
 
             <div class="col-sm-8 mt-3">
                 <label for="input-last-name" class="form-label">Фамилия</label>
-                <input type="text" class="form-control" value="{{ currentUser.last_name }}" id="input-last-name" pattern="^[А-Я][а-я]{1,25}$" required>
+                <input type="text" class="form-control" value="{{ currentUser.last_name }}" id="input-last-name" pattern="^[а-яА-Я]{1,25}$" required>
             </div>
         </div>
 
@@ -27,9 +27,11 @@
 
                 <select class="form-control" id="input-invitatory" required>
 
-                    {% set selected = "" %}
 
                     {% for user in users %}
+
+                        {% set selected = "" %}
+
                         {% if user.id != currentUser.id %}
                             {% if invitatoryUser.id == user.id %}
                                 {% set selected = "selected" %}
@@ -55,7 +57,7 @@
             </div>
 
             <div class="col-6" style="text-align: right">
-                <btn class="btn btn-secondary" id="logout-btn">Выйти</btn>
+                <label class="pt-3 mb-0"><a href="#" id="logout-btn">Выйти</a></label>
             </div>
         </div>
 

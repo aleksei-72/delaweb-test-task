@@ -53,7 +53,7 @@ document.getElementById('submit-btn').onclick = function (e) {
 
         document.getElementById('input-password1').classList.add('is-invalid');
         document.getElementById('input-password2').classList.add('is-invalid');
-        document.getElementById('error-password-dont-match').classList.remove('d-none');
+        document.getElementById('label-error-password-dont-match').classList.remove('d-none');
 
         isValidate = false;
     } else {
@@ -92,12 +92,17 @@ document.getElementById('submit-btn').onclick = function (e) {
 
             case E_NOT_UNIQUE_PHONE:
                 document.getElementById('label-error-phone-dont-unique').classList.remove('d-none');
+                document.getElementById('input-phone').classList.add('is-invalid');
                 break;
             case E_INVALID_INVITATORY_ID:
                 document.getElementById('label-error-invitatory-not-found').classList.remove('d-none');
                 break;
             default :
-                document.getElementById('label-undefined-error').classList.remove('d-none');
+                swal({
+                    title: "Обработка данных",
+                    text: "Произошла непредвиденная ошибка",
+                    icon: "error",
+                });
                 break;
         }
 
@@ -108,5 +113,4 @@ document.getElementById('submit-btn').onclick = function (e) {
 function clearErrorLabels() {
     document.getElementById('label-error-phone-dont-unique').classList.add('d-none');
     document.getElementById('label-error-invitatory-not-found').classList.add('d-none');
-    document.getElementById('label-undefined-error').classList.add('d-none');
 }

@@ -62,6 +62,51 @@ class ProfileController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/profile", methods={"PATCH"})
+     */
+    public function patchUser(Request $request) {
+
+        $content = json_decode($request->getContent(), true);
+
+        //remove private data
+        $content['password'] = null;
+
+        $token = $request->cookies->get('token');
+
+        if (!$token) {
+            return $this->json(['error' => ErrorList::E_UNAUTHORIZE], 401);
+        }
+
+        $auth = new Authentication($this->getDoctrine());
+
+        try {
+            $token = $auth->getTokenByKey($token);
+        } catch (\Exception $e) {
+            return $this->json(['error' => ErrorList::E_UNAUTHORIZE], 401);
+        }
+
+        if ($token->getExp() < time()) {
+            //token expired
+            return $this->json(['error' => ErrorList::E_UNAUTHORIZE], 401);
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+
+
+        try {
+            $token->getUser()->patch($this->getDoctrine(), $content);
+        } catch (\Exception $e) {
+            return $this->json(['error' => $e->getMessage()], $e->getCode());
+        }
+
+
+        $manager->flush();
+
+        return $this->json('');
+
+    }
+
     private function clearCookieAndRedirectToLogin(): Response {
         $response = new Response();
 
@@ -71,5 +116,6 @@ class ProfileController extends AbstractController
         $response->setStatusCode(302);
         return $response;
     }
+
 
 }

@@ -11,7 +11,7 @@
 
         <div class="mt-3">
             <label for="input-password" class="form-label">Пароль</label>
-            <input type="password" class="form-control" id="input-password" pattern="(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{6,}" required>
+            <input type="password" class="form-control" id="input-password" pattern="[0-9a-zA-Z!@#$%^&*]{6,}" required>
             <p class="error-text d-none" id="label-error-invalid-password">Неверный пароль</p>
         </div>
 
@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-sm-8" style="text-align: right">
-                <p class="pt-3 mb-0">У вас еще нет аккаунта? <label><a href="/registration">Зарегистрируйтесь</a></label></p>
+                <p class="pt-3 mb-0">Нет аккаунта? <label><a href="/registration">Регистрация</a></label></p>
             </div>
         </div>
 

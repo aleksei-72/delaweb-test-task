@@ -74,9 +74,20 @@ document.getElementById('submit-btn').onclick = function (e) {
 
             case E_INVALID_PASSWORD:
                 document.getElementById('label-error-invalid-password').classList.remove('d-none');
+                document.getElementById('input-password').classList.add('is-invalid');
                 break;
+
             case E_USER_NOT_FOUND:
                 document.getElementById('label-error-phone-not-found').classList.remove('d-none');
+                document.getElementById('input-phone').classList.add('is-invalid');
+                break;
+
+            default:
+                swal({
+                    title: "Обработка данных",
+                    text: "Произошла непредвиденная ошибка",
+                    icon: "error",
+                });
                 break;
         }
 
